@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "199655479023",
+    "project_id": "smartthings-alarm-8d228",
+    "storage_bucket": "smartthings-alarm-8d228.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:199655479023:android:9ced1077028658fb5fed1a",
+        "android_client_info": {
+          "package_name": "com.juns.st_alarm"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA9DmBLF4aTIOZO80HEOberacd-e5toNG0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,61 +1,15 @@
-const express = require('express');
-const admin = require('firebase-admin');
-const app = express();
+const express = require('express'); const admin = require('firebase-admin'); const app = express();
 
-// 1. JSON 형태의 데이터를 읽을 수 있게 설정
 app.use(express.json());
 
-// 2. Firebase 인증 키 파일 연결 (파일명이 serviceAccountKey.json이어야 함)
 const serviceAccount = require("./serviceAccountKey.json");
 
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount)
-});
+admin.initializeApp({ credential: admin.credential.cert(serviceAccount) });
 
-// 3. 포트 설정 (Render 환경에 맞게 설정)
 const PORT = process.env.PORT || 3000;
 
-// 4. 아카라 신호를 받을 주소 (Webhook)
-app.post('/aqara-webhook', async (req, res) => {
-    console.log("🔔 아카라 신호 도착! 내용:", req.body);
+app.post('/st-webhook', async (req, res) => { console.log("SmartThings signal received:", req.body);
 
-    // 5. 알림 메시지 구성
-    const message = {
-        notification: {
-            title: '🚨 긴급 상황 발생!',
-            body: '아카라 센서가 감지되었습니다. 앱을 확인하세요!'
-        },
-        // 모든 사용자에게 보내거나, 특정 토픽을 구독한 기기에 보낼 때 사용
-        topic: 'all_users', 
-        
-        // 안드로이드 우선순위 설정
-        android: {
-            priority: 'high',
-        },
-        // 아이폰(iOS) 긴급 설정
-        apns: {
-            payload: {
-                aps: {
-                    sound: 'default',
-                    badge: 1,
-                    // 'critical' 알림 권한이 있다면 소리가 무조건 울리게 설정 가능
-                },
-            },
-        },
-    };
-
-    try {
-        // 6. Firebase를 통해 푸시 알림 전송
-        const response = await admin.messaging().send(message);
-        console.log('✅ 푸시 알림 전송 성공:', response);
-        res.status(200).send('Success');
-    } catch (error) {
-        console.error('❌ 푸시 알림 전송 실패:', error);
-        res.status(500).send('Error');
-    }
 });
 
-// 7. 서버 실행
-app.listen(PORT, '0.0.0.0', () => {
-    console.log(`🚀 서버가 준비되었습니다! 포트: ${PORT}`);
-});
+app.listen(PORT, '0.0.0.0', () => { console.log('Server is running on port ' + PORT); });
