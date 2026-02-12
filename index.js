@@ -1,15 +1,16 @@
-const express = require('express'); const admin = require('firebase-admin'); const app = express();
-
+const express = require('express');
+const app = express();
 app.use(express.json());
 
-const serviceAccount = require("./serviceAccountKey.json");
-
-admin.initializeApp({ credential: admin.credential.cert(serviceAccount) });
-
-const PORT = process.env.PORT || 3000;
-
-app.post('/st-webhook', async (req, res) => { console.log("SmartThings signal received:", req.body);
-
+// 주소가 뭐든, 방식이 뭐든 무조건 다 받음
+app.all('*', (req, res) => {
+    console.log('🔔 [신호 감지] 어떤 주소로든 신호가 들어왔습니다!');
+    console.log('경로:', req.path);
+    console.log('데이터:', req.query || req.body);
+    res.status(200).send('SUCCESS');
 });
 
-app.listen(PORT, '0.0.0.0', () => { console.log('Server is running on port ' + PORT); });
+const PORT = process.env.PORT || 10000;
+app.listen(PORT, () => {
+    console.log(`🚀 서버 재시작 완료. 이제 아무 신호나 보내보세요.`);
+});
